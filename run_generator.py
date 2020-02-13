@@ -141,6 +141,11 @@ Run 'python %(prog)s <subcommand> --help' for subcommand help.''',
     parser_style_mixing_example.add_argument('--truncation-psi', type=float, help='Truncation psi (default: %(default)s)', default=0.5)
     parser_style_mixing_example.add_argument('--result-dir', help='Root directory for run results (default: %(default)s)', default='results', metavar='DIR')
 
+    parser_windowed = subparsers.add_parser('windowed')
+    parser_windowed.add_argument('--network', help='Network pickle filename', dest='network_pkl', required=True)
+    parser_windowed.add_argument('--truncation-psi', type=float, help='Truncation psi (default: %(default)s)', default=0.5)
+    parser_windowed.add_argument('--result-dir', help='Root directory for run results (default: %(default)s)', default='results', metavar='DIR')
+
     args = parser.parse_args()
     kwargs = vars(args)
     subcmd = kwargs.pop('command')
@@ -158,7 +163,8 @@ Run 'python %(prog)s <subcommand> --help' for subcommand help.''',
 
     func_name_map = {
         'generate-images': 'run_generator.generate_images',
-        'style-mixing-example': 'run_generator.style_mixing_example'
+        'style-mixing-example': 'run_generator.style_mixing_example',
+        'windowed': 'window.run_window',
     }
     dnnlib.submit_run(sc, func_name_map[subcmd], **kwargs)
 
